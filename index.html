@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Fetch Data XHR</title>
+</head>
+<body style="text-align:center">
+   <h3>XHR Response with Vanilla JS</h3>
+   <button id="fetch" style="padding: 10px;outline: 0">Click!</button>
+   <button id="reset" style="padding: 10px;outline: 0">Reset!</button>
+   <br>
+   <br>
+   <div id="show_data"></div>
+   
+   <script>
+        let html = '';
+        let showData = document.getElementById('show_data');
+        document.getElementById('fetch').addEventListener('click', function(){
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', 'get_data.txt'); 
+            // SEE THE 'get_data.php' file if you want to fetch data from your database as JSON format
+            // AS example I am using text file  (the data are given in json format)
+            xhr.responseType = 'json';
+            xhr.send();
+            xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+            let responseObj = xhr.response;
+            for(let i=0; i < responseObj.length; i++ ){
+                html += "<div style='text-align:left;box-shadow: 0 0 4px 0px #c5b2b2;font-size:20px;padding:10px;line-height:1'>";
+                html += "Book Name :" + responseObj[i].book_name + "<br>";
+                html += "ISBN :" + responseObj[i].isbn + "<br>";
+                html += "Author :" + responseObj[i].author + "<br>";
+                html += "</div><br>";
+            }     
+            }
+            //Below code for not repeating data
+            if(showData.innerHTML == ''){
+                showData.innerHTML = html;
+            }
+            else{
+                showData.innerHTML = '';
+                html = '';
+            }
+            
+        };
+        
+        });
+        
+
+        document.getElementById('reset').addEventListener('click', function(){
+            html = '';
+            showData.innerHTML = ''; 
+        })
+        
+   </script> 
+
+</body>
+</html>
